@@ -226,21 +226,103 @@ class LinkedList {
 
        return slowPointer.data;
     }
+
+    mergeSorted(ll1, ll2)
+    {
+        let node1 = ll1.head;
+        let node2 = ll2.head;
+        let newList = new LinkedList()
+        
+        while(node1 || node2)
+            {
+                if(!node1)
+                    {
+                        newList.prepend(node2.data);
+                        node2 = node2.next;
+                        continue;
+                    }
+                if(!node2)
+                    {
+                        newList.prepend(node1.data);
+                        node1 = node1.next;
+                        continue;
+                    }
+                if(node1.data > node2.data)
+                    {
+                        newList.prepend(node2.data);
+                        node2 = node2.next;
+                    }
+                    else
+                    {
+                        newList.prepend(node1.data);
+                        node1 = node1.next;
+                    }                    
+            }
+        return newList;
+    }
+
+    deleteFromEnd(index)
+    {
+        if(index === 1 && size === 1)
+            {
+                this.head == null;
+            }
+        let slowestNode = this.head
+        let slowNode = this.head.next;
+        let fastNode = this.head;
+
+        for(let i = 0; i < index; i++)
+            {                
+                if(!fastNode)
+                    {
+                        return;
+                    }
+                fastNode = fastNode.next;                
+            }
+
+        while(fastNode.next && slowNode)
+            {
+                slowestNode = slowestNode.next;
+                slowNode = slowNode.next;
+                fastNode = fastNode.next;
+            }        
+        slowestNode.next = slowNode.next;
+        this.size--;
+        return slowNode;
+    }
 }
 
-let linkedList = new LinkedList();
+
+
+
+
+
+let linkedList1 = new LinkedList();
+let linkedList2 = new LinkedList();
 
 // 10 -> null
 // 20 -> 10 -> null
 // 30 -> 20 -> 10 -> null
-linkedList.prepend(10);
-linkedList.prepend(20);
-linkedList.prepend(30);
-linkedList.insertAt(15, 2);
-linkedList.updateAt(25, 3);
+linkedList1.prepend(30);
+linkedList1.prepend(20);
+linkedList1.prepend(10);
 
+linkedList2.prepend(35);
+linkedList2.prepend(25);
+linkedList2.prepend(15);
+
+console.log("------------\n");
 // 30 -> 15 -> 10 -> null
-linkedList.printList();
+linkedList1.printList();
+linkedList2.printList();
+console.log("------------\n");
+console.log("Merging both the first list and the second list\n")
+linkedList3 = linkedList2.mergeSorted(linkedList1, linkedList2);
+linkedList3.printList();
+console.log("------------\n");
+console.log("Deleting a node 3 from the end");
+linkedList3.deleteFromEnd(3);
+linkedList3.printList();
 
 
 // Blockchain
